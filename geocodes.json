@@ -186,5 +186,69 @@
   "Singapore|Singapore": [
     1.3521,
     103.8198
+  ],
+  "Austin|USA": [
+    30.2672,
+    -97.7431
+  ],
+  "Beijing|China": [
+    39.9042,
+    116.4074
+  ],
+  "Boise|USA": [
+    43.615,
+    -116.2023
+  ],
+  "Burlington|USA": [
+    44.4759,
+    -73.2121
+  ],
+  "Dresden|Germany": [
+    51.0504,
+    13.7373
+  ],
+  "Hiroshima|Japan": [
+    34.3853,
+    132.4553
+  ],
+  "Icheon|South Korea": [
+    37.2711,
+    127.4347
+  ],
+  "Kumamoto|Japan": [
+    32.8032,
+    130.7079
+  ],
+  "Malta|USA": [
+    42.9965,
+    -73.82
+  ],
+  "Manassas|USA": [
+    38.7509,
+    -77.4753
+  ],
+  "Phoenix|USA": [
+    33.4484,
+    -112.074
+  ],
+  "Shenzhen|China": [
+    22.5431,
+    114.0579
+  ],
+  "Taichung|Taiwan": [
+    24.1477,
+    120.6736
+  ],
+  "Tainan|Taiwan": [
+    22.9999,
+    120.227
+  ],
+  "Taylor|USA": [
+    30.5704,
+    -97.4092
+  ],
+  "Tianjin|China": [
+    39.3434,
+    117.3616
   ]
 }
