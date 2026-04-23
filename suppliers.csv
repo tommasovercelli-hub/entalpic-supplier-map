@@ -27,7 +27,6 @@ flag,parent_company,site_name,city,country,type
 🇩🇪,Merck KGaA (EMD Electronics),Tempe Hub,Tempe,USA,Plant/R&D
 🇩🇪,Merck KGaA (EMD Electronics),Hometown Plant,Hometown,USA,Plant
 🇩🇪,Merck KGaA (EMD Electronics),San Jose Innovation Hub,San Jose,USA,R&D
-🇩🇪,Merck KGaA (EMD Electronics),Poseung Hub,Pyeongtaek,South Korea,R&D
 🇩🇪,Merck KGaA (EMD Electronics),Eumseong Plant,Eumseong,South Korea,Plant
 🇩🇪,Merck KGaA (EMD Electronics),Daejeon Center,Daejeon,South Korea,R&D
 🇩🇪,Merck KGaA (EMD Electronics),Shizuoka Hub,Kakegawa,Japan,Plant/R&D
@@ -35,24 +34,19 @@ flag,parent_company,site_name,city,country,type
 🇩🇪,Merck KGaA (EMD Electronics),Kaohsiung Plant,Kaohsiung,Taiwan,Plant
 🇩🇪,Merck KGaA (EMD Electronics),Shanghai Electronics Technology Center,Shanghai,China,Plant/R&D
 🇰🇷,SK Materials (SK Specialty),HQ,Yeongju,South Korea,HQ
-🇰🇷,SK Materials (SK Specialty),Yeongju Factory,Yeongju,South Korea,Plant
+🇰🇷,SK Materials (SK Specialty),Yeongju Factory,Yeongju,South Korea,Plant/R&D
 🇰🇷,SK Materials (SK Specialty),SK trichem,Sejong,South Korea,Plant
-🇰🇷,SK Materials (SK Specialty),Integrated Analysis Center,Yeongju,South Korea,R&D
 🇰🇷,SK Materials (SK Specialty),Jiangsu Plant,Zhenjiang,China,Plant
 🇯🇵,ADEKA Corporation,HQ,Tokyo,Japan,HQ
 🇯🇵,ADEKA Corporation,Kashima Plant,Kamisu,Japan,Plant
-🇯🇵,ADEKA Corporation,Tokyo R&D Center,Tokyo,Japan,R&D
 🇯🇵,ADEKA Corporation,Adeka Korea R&D Center,Hwaseong,South Korea,R&D
 🇯🇵,ADEKA Corporation,Jeonju Plant,Wanju,South Korea,Plant
 🇯🇵,TANAKA Precious Metals,HQ,Tokyo,Japan,HQ
 🇯🇵,TANAKA Precious Metals,Tsukuba Technical Center,Tsukuba,Japan,Plant/R&D
 🇯🇵,TANAKA Precious Metals,Hiratsuka Technical Center,Hiratsuka,Japan,R&D
-🇯🇵,TANAKA Precious Metals,Tanaka Electronics Taiwan,Tongluo,Taiwan,Plant
-🇯🇵,TANAKA Precious Metals,Tanaka Electronics Taiwan Tech Center,Tongluo,Taiwan,R&D
+🇯🇵,TANAKA Precious Metals,Tanaka Electronics Taiwan,Tongluo,Taiwan,Plant/R&D
 🇰🇷,Soulbrain,HQ,Seongnam,South Korea,HQ
-🇰🇷,Soulbrain,Brain Hub,Seongnam,South Korea,R&D
-🇰🇷,Soulbrain,Gongju Factory,Gongju,South Korea,Plant
-🇰🇷,Soulbrain,Manufacturing Tech R&D Center,Gongju,South Korea,R&D
+🇰🇷,Soulbrain,Gongju Factory,Gongju,South Korea,Plant/R&D
 🇰🇷,Soulbrain,Yong-in R&D Center,Yongin,South Korea,R&D
 🇰🇷,UP Chemical (Yoke Technology),HQ,Pyeongtaek,South Korea,HQ
 🇰🇷,UP Chemical (Yoke Technology),Quanjiao Manufacturing Site,Quanjiao,China,Plant
@@ -60,16 +54,11 @@ flag,parent_company,site_name,city,country,type
 🇬🇧,Linde Electronics,US Electronics Center,Danbury,USA,Plant/R&D
 🇬🇧,Linde Electronics,Alpha Plant,Alpha,USA,Plant
 🇬🇧,Linde Electronics,Medford Plant,Medford,USA,Plant
-🇰🇷,DNF Co. Ltd.,HQ,Daejeon,South Korea,HQ
-🇰🇷,DNF Co. Ltd.,DNF R&D Center,Daejeon,South Korea,R&D
 🇰🇷,Wonik Materials,HQ,Cheonan,South Korea,HQ
 🇰🇷,Wonik Materials,Chungcheongbuk-do Site,Cheongju,South Korea,Plant
 🇩🇪,Heraeus Precious Metals,HQ,Hanau,Germany,HQ
 🇩🇪,Heraeus Precious Metals,Hanau Plant,Hanau,Germany,Plant
 🇯🇵,Tri Chemical Laboratories (TCLC),HQ,Uenohara,Japan,HQ
-🇯🇵,Tri Chemical Laboratories (TCLC),Second Uenohara Plant,Uenohara,Japan,Plant
-🇯🇵,Tri Chemical Laboratories (TCLC),Uenohara Annex,Uenohara,Japan,Plant
 🇯🇵,Tri Chemical Laboratories (TCLC),Minami-Alps Plant,Minami-Alps,Japan,Plant
 🇯🇵,Tri Chemical Laboratories (TCLC),Taiwan Plant,Tongluo,Taiwan,Plant
 🇯🇵,Tri Chemical Laboratories (TCLC),SK Tri Chem JV,Sejong,South Korea,Plant
-🇯🇵,Tri Chemical Laboratories (TCLC),HBR Co. Ltd. (Air Liquide JV),Tokyo,Japan,Plant
