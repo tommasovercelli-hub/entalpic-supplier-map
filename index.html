@@ -138,7 +138,7 @@
     padding-top: 12px;
   }
 
-  #map { height: 100%; }
+  #map { height: 100%; background: #ffffff; }
 
   /* Popup */
   .leaflet-popup-content-wrapper {
@@ -378,11 +378,25 @@ function fabPopupHTML(r) {
 }
 
 // ---------- map ----------
-const map = L.map('map', { worldCopyJump: true }).setView([35, 20], 2);
+const WORLD_BOUNDS = [[-60, -170], [75, 180]];  // cropped to inhabited latitudes — skips most of Antarctica
+const map = L.map('map', {
+  minZoom: 2,
+  maxZoom: 19,
+  worldCopyJump: false,              // don't wrap around the dateline
+  maxBounds: [[-85, -180], [85, 180]],  // constrain panning to one world
+  maxBoundsViscosity: 1.0,           // hard edge — bounds cannot be dragged past
+});
+// Fit the initial view to the world bounds — picks the right zoom for any screen size,
+// so there are no gray bars on the top/bottom or horizontal map repetition.
+map.fitBounds(WORLD_BOUNDS, { padding: [10, 10] });
+// On resize, just recalculate tile sizes — don't snap the user's viewport
+window.addEventListener('resize', () => map.invalidateSize());
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
   subdomains: 'abcd',
-  maxZoom: 19
+  maxZoom: 19,
+  noWrap: true,                      // don't tile horizontally — one world only
+  bounds: [[-85, -180], [85, 180]],
 }).addTo(map);
 
 // ---------- state ----------
