@@ -313,13 +313,14 @@ const selectedTypes = new Set(Object.keys(TYPE_COLOR));
 let selectedCompanies = new Set();
 let searchTerm = '';
 
-// Deterministic tiny jitter so sites sharing a city don't stack into one unclickable marker.
-// ~0.015 degrees ≈ 1.5 km — visible at city-zoom, invisible at world-zoom.
+// Deterministic jitter so sites sharing a city don't stack into one unclickable marker.
+// ~0.05 degrees ≈ 5 km — clearly separated at country-zoom, invisible at world-zoom.
+// Minimum offset prevents sites from landing exactly on the original coordinate.
 function jitter(lat, lon, key) {
   let h = 0;
   for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) | 0;
   const a = ((h & 0xFFFF) / 0xFFFF) * 2 * Math.PI;
-  const r = (((h >> 16) & 0xFF) / 0xFF) * 0.015;
+  const r = 0.02 + (((h >> 16) & 0xFF) / 0xFF) * 0.04;  // 2-6 km from center
   return [lat + Math.cos(a) * r, lon + Math.sin(a) * r];
 }
 
