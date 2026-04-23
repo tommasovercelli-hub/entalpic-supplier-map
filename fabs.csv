@@ -1,32 +1,8 @@
 flag,company,site_name,city,country,type
-🇰🇷,SK Hynix,Icheon fab,Icheon,South Korea,IDM
-🇰🇷,SK Hynix,Cheongju fab,Cheongju,South Korea,IDM
-🇰🇷,Samsung Electronics,Giheung/Hwaseong fab,Hwaseong,South Korea,IDM
-🇰🇷,Samsung Electronics,Pyeongtaek fab,Pyeongtaek,South Korea,IDM
-🇰🇷,Samsung Electronics,Austin fab,Austin,USA,IDM
-🇰🇷,Samsung Electronics,Taylor fab (new),Taylor,USA,IDM
-🇺🇸,Micron,Boise HQ fab,Boise,USA,IDM
-🇺🇸,Micron,Manassas fab,Manassas,USA,IDM
-🇺🇸,Micron,Hiroshima fab,Hiroshima,Japan,IDM
-🇺🇸,Micron,Taichung fab,Taichung,Taiwan,IDM
-🇰🇷,Samsung Foundry,Hwaseong foundry,Hwaseong,South Korea,Foundry
-🇰🇷,Samsung Foundry,Pyeongtaek foundry,Pyeongtaek,South Korea,Foundry
-🇰🇷,Samsung Foundry,Taylor foundry,Taylor,USA,Foundry
-🇹🇼,TSMC,Hsinchu fab,Hsinchu,Taiwan,Foundry
-🇹🇼,TSMC,Tainan fab,Tainan,Taiwan,Foundry
-🇹🇼,TSMC,Taichung fab,Taichung,Taiwan,Foundry
-🇹🇼,TSMC,Kaohsiung fab,Kaohsiung,Taiwan,Foundry
-🇹🇼,TSMC,Arizona fab,Phoenix,USA,Foundry
-🇹🇼,TSMC,Kumamoto (JASM),Kumamoto,Japan,Foundry
-🇹🇼,TSMC,Dresden (ESMC),Dresden,Germany,Foundry
-🇨🇳,SMIC,Shanghai fab,Shanghai,China,Foundry
-🇨🇳,SMIC,Beijing fab,Beijing,China,Foundry
-🇨🇳,SMIC,Tianjin fab,Tianjin,China,Foundry
-🇨🇳,SMIC,Shenzhen fab,Shenzhen,China,Foundry
-🇹🇼,UMC,Hsinchu fab,Hsinchu,Taiwan,Foundry
-🇹🇼,UMC,Tainan fab,Tainan,Taiwan,Foundry
-🇹🇼,UMC,Singapore fab,Singapore,Singapore,Foundry
-🇺🇸,GlobalFoundries,Malta fab,Malta,USA,Foundry
-🇺🇸,GlobalFoundries,Burlington fab,Burlington,USA,Foundry
-🇺🇸,GlobalFoundries,Dresden fab,Dresden,Germany,Foundry
-🇺🇸,GlobalFoundries,Singapore fab,Singapore,Singapore,Foundry
+🇺🇸,Micron,Boise HQ fab,8000 S Federal Way,Boise,USA,IDM
+🇰🇷,SK Hynix,Icheon HQ fab,2091 Gyeongchung-daero Bubal-eup,Icheon,South Korea,IDM
+🇰🇷,Samsung Electronics,Hwaseong HQ fab,1 Samsungjeonja-ro,Hwaseong,South Korea,IDM
+🇹🇼,TSMC,Hsinchu HQ fab,No. 8 Li-Hsin Rd 6 Hsinchu Science Park,Hsinchu,Taiwan,Foundry
+🇨🇳,SMIC,Shanghai HQ fab,18 Zhangjiang Rd Pudong New Area,Shanghai,China,Foundry
+🇹🇼,UMC,Hsinchu HQ fab,No. 3 Li-Hsin 2nd Rd Hsinchu Science Park,Hsinchu,Taiwan,Foundry
+🇺🇸,GlobalFoundries,Malta HQ fab,400 Stone Break Rd Extension,Malta,USA,IDM
