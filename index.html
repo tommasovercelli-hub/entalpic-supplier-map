@@ -32,6 +32,12 @@
     padding: 20px 20px 30px 20px;
     overflow-y: auto;
   }
+  aside .logo {
+    display: block;
+    width: 150px;
+    height: auto;
+    margin-bottom: 14px;
+  }
   aside .kicker {
     font-size: 10px;
     letter-spacing: 3px;
@@ -200,8 +206,9 @@
 <body>
 <div id="app">
   <aside>
-    <div class="kicker">ENTALPIC · PRECURSORS</div>
-    <h1>Global supplier infrastructure</h1>
+    <img class="logo" src="assets/entalpic-logo.png" alt="Entalpic" />
+    <div class="kicker">BUSINESS INTELLIGENCE PLATFORM</div>
+    <h1>Precursor Suppliers Map</h1>
     <div class="subtitle">HQ · Plant · R&amp;D sites for ALD precursor suppliers</div>
 
     <input class="search" id="search" type="search" placeholder="Search company, city, or country…" />
@@ -234,10 +241,16 @@
     </h2>
     <div id="company-filters"></div>
 
+    <h2>Fabs <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;">(IDMs &amp; Foundries)</span>
+      <button class="toggle-all" data-toggle="fabs">toggle all</button>
+    </h2>
+    <div id="fab-filters"></div>
+
     <footer class="side-foot">
-      Marker color = site type. Flag in popup = parent company's country of origin.<br>
+      Marker color = site type. Flag in popup = parent company's country of origin.
+      Fabs shown as 🏭 emoji.<br>
       Click any marker for details.<br>
-      Edit <code>suppliers.csv</code> to update the data.
+      Edit <code>suppliers.csv</code> / <code>fabs.csv</code> to update the data.
     </footer>
   </aside>
 
@@ -289,19 +302,19 @@ const TYPE_CLASS = {
 };
 
 // ---------- marker icon ----------
-// HQs get a slightly bigger marker with a gold halo since they're the anchor of each company.
+// HQs get a larger marker with a gold halo since they're the anchor of each company.
 function makeIcon(row) {
   const fill = TYPE_COLOR[row.type] || '#94A3B8';
   const isHQ = row.type === 'HQ';
-  const size = isHQ ? 22 : 14;
-  const core = isHQ ? 6 : 5;
+  const size = isHQ ? 40 : 30;
+  const core = isHQ ? 12 : 11;
   const halo = isHQ
-    ? `<circle cx="${size/2}" cy="${size/2}" r="${size/2 - 1}" fill="none" stroke="#F59E0B" stroke-width="2" opacity="0.9"/>`
+    ? `<circle cx="${size/2}" cy="${size/2}" r="${size/2 - 1}" fill="none" stroke="#F59E0B" stroke-width="3" opacity="0.9"/>`
     : '';
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
       ${halo}
-      <circle cx="${size/2}" cy="${size/2}" r="${core}" fill="${fill}" stroke="white" stroke-width="2"/>
+      <circle cx="${size/2}" cy="${size/2}" r="${core}" fill="${fill}" stroke="white" stroke-width="3"/>
     </svg>`;
   return L.divIcon({
     className: 'entalpic-marker',
@@ -329,6 +342,41 @@ function escapeHTML(s) {
     ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 }
 
+// ---------- fab marker (IDM / Foundry) — rendered as factory emoji ----------
+function makeFabIcon() {
+  const size = 36;
+  // White circle background so the emoji reads clearly over any map tile color
+  const html = `
+    <div style="
+      width:${size}px;height:${size}px;
+      background:#fff;
+      border:2px solid #1E2761;
+      border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      box-shadow:0 2px 6px rgba(13,22,63,0.25);
+      font-size:18px;line-height:1;
+    ">🏭</div>`;
+  return L.divIcon({
+    className: 'entalpic-fab-marker',
+    html,
+    iconSize: [size, size],
+    iconAnchor: [size/2, size/2],
+    popupAnchor: [0, -size/2]
+  });
+}
+
+function fabPopupHTML(r) {
+  return `
+    <div class="pop-header">
+      <span class="pop-flag">${r.flag || ''}</span>
+      <span class="pop-company">${escapeHTML(r.company)}</span>
+    </div>
+    <div class="pop-site">${escapeHTML(r.site_name)}</div>
+    <div class="pop-loc">${escapeHTML(r.city)}, ${escapeHTML(r.country)}</div>
+    <span class="pop-type" style="background:#1E2761;">🏭 ${escapeHTML(r.type)}</span>
+  `;
+}
+
 // ---------- map ----------
 const map = L.map('map', { worldCopyJump: true }).setView([35, 20], 2);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -344,6 +392,11 @@ const selectedTypes = new Set(Object.keys(TYPE_COLOR));
 let selectedCompanies = new Set();
 let selectedCountries = new Set();
 let searchTerm = '';
+
+// Fabs (IDMs and foundries) are a separate layer from precursor suppliers
+let allFabs = [];
+const fabMarkers = new Map();
+let selectedFabs = new Set();
 
 // Cluster group — shows a single numbered bubble when markers are close together
 // at low zoom, expands into individual dots as you zoom in.
@@ -407,6 +460,22 @@ function applyFilters() {
   if (toRemove.length) clusterGroup.removeLayers(toRemove);
   if (toAdd.length) clusterGroup.addLayers(toAdd);
 
+  // Fab markers: filtered by fab-company toggle + country + search. Not affected by site-type.
+  for (const [row, m] of fabMarkers.entries()) {
+    const coOK      = selectedFabs.has(row.company);
+    const countryOK = selectedCountries.has(row.country);
+    const q = searchTerm.toLowerCase();
+    const searchOK = !q ||
+      row.company.toLowerCase().includes(q) ||
+      row.site_name.toLowerCase().includes(q) ||
+      row.city.toLowerCase().includes(q) ||
+      row.country.toLowerCase().includes(q);
+    const show = coOK && countryOK && searchOK;
+    const isShown = map.hasLayer(m);
+    if (show && !isShown) m.addTo(map);
+    else if (!show && isShown) map.removeLayer(m);
+  }
+
   document.getElementById('stat-total').textContent = visible;
   document.getElementById('stat-companies').textContent = cos.size;
   document.getElementById('stat-countries').textContent = cnts.size;
@@ -461,10 +530,12 @@ const COUNTRY_FLAGS = {
 };
 
 function buildCountryFilters() {
-  // Order by count descending, then alphabetically — most populous markets at the top
-  const countries = [...new Set(all.map(r => r.country))];
+  // Order by count descending, then alphabetically — most populous markets at the top.
+  // Count both supplier sites and fab sites so the number reflects total entities per country.
+  const combined = [...all, ...allFabs];
+  const countries = [...new Set(combined.map(r => r.country))];
   const countOf = {};
-  for (const r of all) countOf[r.country] = (countOf[r.country] || 0) + 1;
+  for (const r of combined) countOf[r.country] = (countOf[r.country] || 0) + 1;
   countries.sort((a, b) => countOf[b] - countOf[a] || a.localeCompare(b));
   selectedCountries = new Set(countries);
   const parent = document.getElementById('country-filters');
@@ -493,6 +564,38 @@ function buildCountryFilters() {
 // Generic "toggle all" — works for any of the three filter groups.
 // Behavior: if everything in the group is on, turn everything off; otherwise turn everything on.
 // This matches what most users expect from a toggle-all button.
+function buildFabFilters() {
+  const companies = [...new Set(allFabs.map(r => r.company))].sort();
+  selectedFabs = new Set(companies);
+  const parent = document.getElementById('fab-filters');
+  parent.innerHTML = '';
+  const flagOf = {};
+  for (const r of allFabs) if (!flagOf[r.company]) flagOf[r.company] = r.flag;
+  const countOf = {};
+  for (const r of allFabs) countOf[r.company] = (countOf[r.company] || 0) + 1;
+
+  for (const co of companies) {
+    const label = document.createElement('label');
+    label.className = 'row';
+    label.innerHTML = `
+      <input type="checkbox" data-fab="${escapeHTML(co)}" checked>
+      <span style="font-size:14px;">${flagOf[co] || ''}</span>
+      <span style="font-size:14px;line-height:1;">🏭</span>
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHTML(co)}</span>
+      <span class="count">${countOf[co]}</span>
+    `;
+    parent.appendChild(label);
+  }
+  parent.querySelectorAll('input[data-fab]').forEach(el => {
+    el.addEventListener('change', () => {
+      const name = el.dataset.fab;
+      if (el.checked) selectedFabs.add(name);
+      else selectedFabs.delete(name);
+      applyFilters();
+    });
+  });
+}
+
 function wireToggleAll() {
   document.querySelectorAll('.toggle-all').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -502,6 +605,7 @@ function wireToggleAll() {
       if (target === 'types')     selector = 'input[data-type]';
       else if (target === 'companies') selector = 'input[data-company]';
       else if (target === 'countries') selector = 'input[data-country]';
+      else if (target === 'fabs')      selector = 'input[data-fab]';
       else return;
       const inputs = document.querySelectorAll(selector);
       const allOn = [...inputs].every(i => i.checked);
@@ -529,12 +633,13 @@ document.getElementById('search').addEventListener('input', (e) => {
 // ---------- load data ----------
 Promise.all([
   fetch('suppliers.csv').then(r => { if (!r.ok) throw new Error('suppliers.csv not found'); return r.text(); }),
-  fetch('geocodes.json').then(r => { if (!r.ok) throw new Error('geocodes.json not found'); return r.json(); })
+  fetch('geocodes.json').then(r => { if (!r.ok) throw new Error('geocodes.json not found'); return r.json(); }),
+  fetch('fabs.csv').then(r => { if (!r.ok) throw new Error('fabs.csv not found'); return r.text(); }),
 ])
-.then(([csvText, geo]) => {
+.then(([csvText, geo, fabsText]) => {
   all = parseCSV(csvText);
 
-  // Attach coordinates
+  // Attach coordinates to suppliers
   const noGeo = [];
   all = all.map(r => {
     const key = `${r.city}|${r.country}`;
@@ -544,10 +649,10 @@ Promise.all([
   }).filter(Boolean);
 
   if (noGeo.length) {
-    console.warn('Missing geocodes for:', [...new Set(noGeo)]);
+    console.warn('Missing supplier geocodes for:', [...new Set(noGeo)]);
   }
 
-  // Add markers to cluster group. HQ rendered last so they sit on top at identical coordinates.
+  // Add supplier markers to cluster group. HQ rendered last so they sit on top at identical coordinates.
   const sorted = [...all].sort((a, b) => (a.type === 'HQ') - (b.type === 'HQ'));
   const allMarkers = [];
   for (const row of sorted) {
@@ -559,8 +664,35 @@ Promise.all([
   }
   clusterGroup.addLayers(allMarkers);
 
+  // Parse and render fabs. Separate layer — not in the cluster group, always visible as individual markers.
+  allFabs = parseCSV(fabsText);
+  const noGeoFabs = [];
+  allFabs = allFabs.map(r => {
+    const key = `${r.city}|${r.country}`;
+    const coords = geo[key];
+    if (!coords) { noGeoFabs.push(`${r.city}, ${r.country}`); return null; }
+    return { ...r, lat: coords[0], lon: coords[1] };
+  }).filter(Boolean);
+
+  if (noGeoFabs.length) {
+    console.warn('Missing fab geocodes for:', [...new Set(noGeoFabs)]);
+  }
+
+  for (const row of allFabs) {
+    const [lat, lon] = jitter(row.lat, row.lon, row.site_name + row.company);
+    const m = L.marker([lat, lon], {
+      icon: makeFabIcon(),
+      title: `${row.company} — ${row.site_name}`,
+      zIndexOffset: 1000,  // keep fabs on top of suppliers when they overlap
+    });
+    m.bindPopup(fabPopupHTML(row));
+    fabMarkers.set(row, m);
+    m.addTo(map);
+  }
+
   buildCompanyFilters();
   buildCountryFilters();
+  buildFabFilters();
   wireToggleAll();
   applyFilters();
 })
