@@ -1,8 +1,8 @@
-flag,company,site_name,address,city,country,type
-us,Micron,Boise HQ fab,8000 S Federal Way,Boise,USA,IDM
-kr,SK Hynix,Icheon HQ fab,2091 Gyeongchung-daero Bubal-eup,Icheon,South Korea,IDM
-kr,Samsung Electronics,Hwaseong HQ fab,1 Samsungjeonja-ro,Hwaseong,South Korea,IDM
-tw,TSMC,Hsinchu HQ fab,No. 8 Li-Hsin Rd 6 Hsinchu Science Park,Hsinchu,Taiwan,Foundry
-cn,SMIC,Shanghai HQ fab,18 Zhangjiang Rd Pudong New Area,Shanghai,China,Foundry
-tw,UMC,Hsinchu HQ fab,No. 3 Li-Hsin 2nd Rd Hsinchu Science Park,Hsinchu,Taiwan,Foundry
-us,GlobalFoundries,Malta HQ fab,400 Stone Break Rd Extension,Malta,USA,Foundry
+flag,company,site_name,city,country,type
+🇺🇸,Micron,Boise HQ fab,Boise,USA,IDM
+🇰🇷,SK Hynix,Icheon HQ fab,Icheon,South Korea,IDM
+🇰🇷,Samsung Electronics,Hwaseong HQ fab,Hwaseong,South Korea,IDM
+🇹🇼,TSMC,Hsinchu HQ fab,Hsinchu,Taiwan,Foundry
+🇨🇳,SMIC,Shanghai HQ fab,Shanghai,China,Foundry
+🇹🇼,UMC,Hsinchu HQ fab,Hsinchu,Taiwan,Foundry
+🇺🇸,GlobalFoundries,Malta HQ fab,Malta,USA,Foundry
