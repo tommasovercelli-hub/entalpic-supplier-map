@@ -47,7 +47,7 @@
   }
   aside h1 {
     font-size: 18px;
-    margin: 0 0 4px 0;
+    margin: 0 0 16px 0;
     letter-spacing: -0.01em;
   }
   aside .subtitle {
@@ -62,6 +62,69 @@
     text-transform: uppercase;
     margin: 18px 0 6px 0;
     font-weight: 700;
+  }
+
+  /* Collapsible filter sections */
+  .filter-section {
+    margin: 14px 0 4px 0;
+    border-top: 1px solid var(--rule);
+    padding-top: 12px;
+  }
+  .filter-section:first-of-type {
+    border-top: none;
+    padding-top: 8px;
+    margin-top: 10px;
+  }
+  .filter-section summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    user-select: none;
+    padding: 2px 0;
+  }
+  /* Hide the default triangle in all browsers */
+  .filter-section summary::-webkit-details-marker { display: none; }
+  .filter-section summary::marker { content: ''; }
+  /* Custom chevron — rotates when open */
+  .filter-section summary::before {
+    content: '';
+    display: inline-block;
+    width: 0; height: 0;
+    border-left: 5px solid var(--muted);
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+  }
+  .filter-section[open] summary::before {
+    transform: rotate(90deg);
+  }
+  .filter-section summary:hover {
+    color: var(--ink);
+  }
+  .filter-section summary:hover::before {
+    border-left-color: var(--ink);
+  }
+  .filter-section summary > span:first-of-type {
+    flex: 1;
+  }
+  .section-hint {
+    font-weight: 400;
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 10px;
+    margin-left: 4px;
+  }
+  .filter-body {
+    margin-top: 6px;
   }
 
   .row {
@@ -209,7 +272,6 @@
     <img class="logo" src="assets/entalpic-logo.png" alt="Entalpic" />
     <div class="kicker">BUSINESS INTELLIGENCE PLATFORM</div>
     <h1>Precursor Suppliers Map</h1>
-    <div class="subtitle">HQ · Plant · R&amp;D sites for ALD precursor suppliers</div>
 
     <input class="search" id="search" type="search" placeholder="Search company, city, or country…" />
 
@@ -219,32 +281,46 @@
       <div class="stat"><div class="stat-num" id="stat-countries">–</div><div class="stat-lbl">Countries</div></div>
     </div>
 
-    <h2>Site type
-      <button class="toggle-all" data-toggle="types">toggle all</button>
-    </h2>
-    <label class="row"><input type="checkbox" data-type="HQ" checked>
-      <span class="dot hq"></span> HQ <span class="count" id="count-HQ">0</span></label>
-    <label class="row"><input type="checkbox" data-type="Plant" checked>
-      <span class="dot plant"></span> Plant <span class="count" id="count-Plant">0</span></label>
-    <label class="row"><input type="checkbox" data-type="R&D" checked>
-      <span class="dot rd"></span> R&amp;D <span class="count" id="count-R&amp;D">0</span></label>
-    <label class="row"><input type="checkbox" data-type="Plant/R&D" checked>
-      <span class="dot mixed"></span> Plant/R&amp;D <span class="count" id="count-Plant-RD">0</span></label>
+    <details class="filter-section" open>
+      <summary>
+        <span>Site type</span>
+        <button class="toggle-all" data-toggle="types">toggle all</button>
+      </summary>
+      <div class="filter-body">
+        <label class="row"><input type="checkbox" data-type="HQ" checked>
+          <span class="dot hq"></span> HQ <span class="count" id="count-HQ">0</span></label>
+        <label class="row"><input type="checkbox" data-type="Plant" checked>
+          <span class="dot plant"></span> Plant <span class="count" id="count-Plant">0</span></label>
+        <label class="row"><input type="checkbox" data-type="R&D" checked>
+          <span class="dot rd"></span> R&amp;D <span class="count" id="count-R&amp;D">0</span></label>
+        <label class="row"><input type="checkbox" data-type="Plant/R&D" checked>
+          <span class="dot mixed"></span> Plant/R&amp;D <span class="count" id="count-Plant-RD">0</span></label>
+      </div>
+    </details>
 
-    <h2>Country
-      <button class="toggle-all" data-toggle="countries">toggle all</button>
-    </h2>
-    <div id="country-filters"></div>
+    <details class="filter-section" open>
+      <summary>
+        <span>Country</span>
+        <button class="toggle-all" data-toggle="countries">toggle all</button>
+      </summary>
+      <div class="filter-body" id="country-filters"></div>
+    </details>
 
-    <h2>Company
-      <button class="toggle-all" data-toggle="companies">toggle all</button>
-    </h2>
-    <div id="company-filters"></div>
+    <details class="filter-section" open>
+      <summary>
+        <span>Company</span>
+        <button class="toggle-all" data-toggle="companies">toggle all</button>
+      </summary>
+      <div class="filter-body" id="company-filters"></div>
+    </details>
 
-    <h2>Fabs <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0;">(IDMs &amp; Foundries)</span>
-      <button class="toggle-all" data-toggle="fabs">toggle all</button>
-    </h2>
-    <div id="fab-filters"></div>
+    <details class="filter-section" open>
+      <summary>
+        <span>Fabs <span class="section-hint">(IDMs &amp; Foundries)</span></span>
+        <button class="toggle-all" data-toggle="fabs">toggle all</button>
+      </summary>
+      <div class="filter-body" id="fab-filters"></div>
+    </details>
 
     <footer class="side-foot">
       Marker color = site type. Flag in popup = parent company's country of origin.
@@ -614,6 +690,7 @@ function wireToggleAll() {
   document.querySelectorAll('.toggle-all').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();  // don't let the click bubble up and toggle the <details> open/closed
       const target = btn.dataset.toggle;
       let selector;
       if (target === 'types')     selector = 'input[data-type]';
