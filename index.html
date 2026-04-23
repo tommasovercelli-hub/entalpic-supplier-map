@@ -761,7 +761,7 @@ Promise.all([
     const m = L.marker([lat, lon], {
       icon: makeFabIcon(),
       title: `${row.company} — ${row.site_name}`,
-      zIndexOffset: 1000,  // keep fabs on top of suppliers when they overlap
+      zIndexOffset: -100,  // let supplier cluster bubbles render on top when they overlap
     });
     m.bindPopup(fabPopupHTML(row));
     fabMarkers.set(row, m);
